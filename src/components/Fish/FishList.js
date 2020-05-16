@@ -1,13 +1,9 @@
 import React, { useContext } from 'react'
-import { map, compose, toUpper, head, tail, join, split, path } from 'ramda'
+import { map } from 'ramda'
 import { FishContext } from '../../contexts/FishContext'
 import Fish from './Fish'
 
-const capFirst = compose(toUpper, head)
-const formatName = s => `${capFirst(s)}${tail(s)}`
-const capAllFirst = compose(join(' '), map(formatName), split(' '))
-const getNames = compose(capAllFirst, path(['name', 'name-en']))
-const mapFish = map(compose(Fish, getNames))
+const mapFish = map(Fish)
 
 const FishListWrapper = ({ children }) => 
   <div>
