@@ -4,6 +4,7 @@ import { FishContext } from '../../contexts/FishContext'
 import Fish from './Fish'
 
 const mapFish = map(Fish)
+// const mapFishLinks = map(path(['name', 'name-en']))
 
 const FishListWrapper = ({ children }) => 
   <div>

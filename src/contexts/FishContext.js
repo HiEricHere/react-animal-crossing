@@ -1,13 +1,10 @@
 import React, { createContext, useEffect, useState } from 'react'
 import { baseURL } from '../constants'
-import { values, compose } from 'ramda'
+import { values, compose, tap } from 'ramda'
 
 export const FishContext = createContext()
 
-const peek = x => {
-  console.log(x)
-  return x
-}
+const peek = tap(console.log)
 const errorLog = e => {
   console.log(`Error log\n${e}`)
 }

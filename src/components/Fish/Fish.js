@@ -9,6 +9,9 @@ import {
 // ID
 const fishId = prop('id')
 
+// Image
+// const fishImgUrl = 
+
 // Name
 const capFirst = compose(join(''), over(lensIndex(0), toUpper))
 const capAllFirst = compose(join(' '), map(capFirst), split(' '))
@@ -26,6 +29,8 @@ const timeAvailability = ifElse(
   always('All day'),
   path(['availability', 'time'])
 )
+// const monthv2 = over(lensPath(['availability', 'isAllYear']), )
+
 const location = path(['availability', 'location'])
 const rarity = path(['availability', 'rarity'])
 
@@ -34,6 +39,8 @@ const fishSize = prop('shadow')
 
 // Price
 // Nook's Cranny
+// const intToString = x => x.toString()
+// const formatPrice = x => convert to string then array
 const fishPrice = prop('price')
 // CJ
 const fishPriceCJ = prop('price-cj')
