@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { 
   prop, path, pathSatisfies, 
   map, split, join, compose, 
@@ -7,7 +8,7 @@ import {
   always } from 'ramda'
 
 // ID
-const fishId = prop('id')
+// const fishId = prop('id')
 
 // Image
 // const fishImgUrl = 
@@ -52,7 +53,8 @@ const fishCatchPhrase = prop('catch-phrase')
 const fishBlathersPhrase = prop('museum-phrase')
 
 const Fish = fish => 
-  <li key={fishId(fish)}>
+  <section id="fish">
+    <Link to={'/fish'}>Back</Link>
     <h3>{getName(fish)}</h3>
     <blockquote style={{fontStyle: 'italic'}}>"{fishCatchPhrase(fish)}"</blockquote>
     <blockquote style={{fontStyle: 'italic'}}>"{fishBlathersPhrase(fish)}"</blockquote>
@@ -66,6 +68,6 @@ const Fish = fish =>
     <h4>Where to find:</h4>
     <p>Location: {location(fish)}</p>
     <p>Hours: {timeAvailability(fish)}</p>
-  </li>
+  </section>
 
 export default Fish

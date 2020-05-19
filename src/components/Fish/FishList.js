@@ -1,28 +1,29 @@
 import React, { useContext } from 'react'
-import { map } from 'ramda'
+import { Link } from 'react-router-dom'
+import { map, path, prop, compose } from 'ramda'
 import { FishContext } from '../../contexts/FishContext'
-import Fish from './Fish'
 
-const mapFish = map(Fish)
-// const mapFishLinks = map(path(['name', 'name-en']))
-
-const FishListWrapper = ({ children }) => 
-  <div>
+const fishId = prop('id')
+const getName = path(['name', 'name-en'])
+const getFileName = prop('file-name')
+const makePathProp = fish => ({
+  pathname: `/fish/${getFileName(fish)}`,
+  state: fish
+})
+const FishLink = fish => 
+  <li key={fishId(fish)}>
+    <Link to={makePathProp(fish)}>{`${getName(fish)}`}</Link>
+  </li>
+const FishListWrapper = children => 
+  <section id="fish-list">
     <h1>Fish:</h1>
-    <ul>
-      {children}
-    </ul>
-  </div>
+    <ul>{children}</ul>
+  </section>
+const mapFishLinks = compose(FishListWrapper, map(FishLink))
 
 const FishList = () => {
-
   const { fishList } = useContext(FishContext)
-
-  return (
-    <FishListWrapper>
-      {mapFish(fishList)}
-    </FishListWrapper>
-  )
+  return mapFishLinks(fishList)
 }
 
 export default FishList

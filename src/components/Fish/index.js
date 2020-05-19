@@ -1,2 +1,3 @@
 import FishList from './FishList'
-export default FishList
+import Fish from './Fish'
+export { FishList, Fish }

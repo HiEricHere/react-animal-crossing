@@ -11,12 +11,14 @@ function App() {
     <>
       <BrowserRouter>
         <Navbar />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/fish" component={FishLanding} />
-          <Route path="/bugs" component={BugsLanding} />
-          <Route path="/villagers" component={VillagersLanding} />
-        </Switch>
+        <main>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/fish" component={FishLanding} />
+            <Route path="/bugs" component={BugsLanding} />
+            <Route path="/villagers" component={VillagersLanding} />
+          </Switch>
+        </main>
       </BrowserRouter>
     </>
   );
