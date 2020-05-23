@@ -2,23 +2,24 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { 
   prop, path, pathSatisfies, 
-  map, split, join, compose, 
-  toUpper, over, lensIndex, 
-  equals, pick, ifElse,
-  always } from 'ramda'
+  compose, equals, pick, 
+  ifElse, always, lensPath,
+  view, lensProp, slice } from 'ramda'
+import { formatTitle, mapFunctions } from '../../utilities/helpers'
 
-// ID
-// const fishId = prop('id')
+const lensFish = lensPath(['location', 'state'])
+const getFromFish = xLens => view(compose(lensFish, xLens))
 
 // Image
 // const fishImgUrl = 
 
 // Name
-const capFirst = compose(join(''), over(lensIndex(0), toUpper))
-const capAllFirst = compose(join(' '), map(capFirst), split(' '))
-const getName = compose(capAllFirst, path(['name', 'name-en']))
+const lensName = lensPath(['name', 'name-en'])
+const Name = name => <h3 key={name}>{name}</h3>
+const makeName = compose(Name, formatTitle, getFromFish(lensName))
 
 // Meta - availability
+const lensAvailability = compose(lensFish, lensProp('availability'))
 // months, time, location, rarity
 const monthAvailability = ifElse(
   pathSatisfies(equals(true), ['availability', 'isAllYear']),
@@ -30,44 +31,60 @@ const timeAvailability = ifElse(
   always('All day'),
   path(['availability', 'time'])
 )
-// const monthv2 = over(lensPath(['availability', 'isAllYear']), )
 
-const location = path(['availability', 'location'])
-const rarity = path(['availability', 'rarity'])
+const getRarity = view(compose(lensAvailability, lensProp('rarity')))
+const Rarity = rarity => <p key={rarity}>Rarity: {rarity}</p>
+const makeRarity = compose(Rarity, getRarity)
+
+const getLocation = view(compose(lensAvailability, lensProp('location')))
+const Location = location => <p key={location}>Where to find: {location}</p>
+const makeLocation = compose(Location, getLocation)
 
 // Size
-const fishSize = prop('shadow')
+const getSize = getFromFish(lensProp('shadow'))
+const Size = size => <p key={size}>Size: {size}</p>
+const makeSize = compose(Size, getSize)
 
 // Price
 // Nook's Cranny
 // const intToString = x => x.toString()
 // const formatPrice = x => convert to string then array
-const fishPrice = prop('price')
+const getPrice = getFromFish(lensProp('price'))
+const NookPrice = price => <li key={price.toString()}>Nook's Cranny: {price}</li>
+const makeNookPrice = compose(NookPrice, getPrice)
 // CJ
-const fishPriceCJ = prop('price-cj')
+const getPriceCJ = getFromFish(lensProp('price-cj'))
+const CJPrice = price => <li key={price.toString()}>CJ: {price}</li>
+const makeCJPrice = compose(CJPrice, getPriceCJ)
+const PriceWrapper = children => 
+  <React.Fragment key="price">
+    <h4>Price</h4>
+    <ul>{children}</ul>
+  </React.Fragment>
+const makePrice = compose(PriceWrapper, mapFunctions([makeNookPrice, makeCJPrice]))
 
 // Description
 // Catch
-const fishCatchPhrase = prop('catch-phrase')
+const getCatchPhrase = getFromFish(lensProp('catch-phrase'))
 // Blathers
-const fishBlathersPhrase = prop('museum-phrase')
+const getBlathersPhrase = getFromFish(lensProp('museum-phrase'))
+const Quote = quote => <blockquote key={`key-${slice(0,10,quote)}`} style={{fontStyle: 'italic'}}>"{quote}"</blockquote>
+const makeCatchPhrase = compose(Quote, getCatchPhrase)
+const makeBlathersPhrase = compose(Quote, getBlathersPhrase)
 
-const Fish = fish => 
+const FishWrapper = children => 
   <section id="fish">
     <Link to={'/fish'}>Back</Link>
-    <h3>{getName(fish)}</h3>
-    <blockquote style={{fontStyle: 'italic'}}>"{fishCatchPhrase(fish)}"</blockquote>
-    <blockquote style={{fontStyle: 'italic'}}>"{fishBlathersPhrase(fish)}"</blockquote>
-    <p>Rarity: {rarity(fish)}</p>
-    <p>Size: {fishSize(fish)}</p>
-    <h4>Price:</h4>
-    <ul>
-      <li>Nook's Cranny: {fishPrice(fish)}</li>
-      <li>CJ: {fishPriceCJ(fish)}</li>
-    </ul>
-    <h4>Where to find:</h4>
-    <p>Location: {location(fish)}</p>
-    <p>Hours: {timeAvailability(fish)}</p>
+    {children}
   </section>
+
+// makeList is a list of functions that convert data -> Components in order
+const makeList = [
+  makeName, makeCatchPhrase, makeBlathersPhrase, 
+  makeRarity, makeSize, makeLocation, 
+  makePrice,
+]
+
+const Fish = compose(FishWrapper, mapFunctions(makeList))
 
 export default Fish

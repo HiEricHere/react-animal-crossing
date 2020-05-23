@@ -1,21 +1,7 @@
 import React from 'react'
-import { Route, Switch, useRouteMatch, Link } from 'react-router-dom'
-import { lensPath, view, compose } from 'ramda'
+import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import FishContextProvider from '../../contexts/FishContext'
 import { Fish, FishList} from '../../components/Fish'
-
-const lensFish = lensPath(['location', 'state'])
-const lensName = lensPath(['name', 'name-en'])
-const getData = xLens => view(compose(lensFish, xLens))
-const getName = getData(lensName)
-const FishTest = props => {
-  return (
-    <section>
-      <Link to={'/fish'}>Back</Link>
-      <div>FishTest: {getName(props)}</div>
-    </section>
-  )
-}
 
 const FishLanding = () => {
   const { path }= useRouteMatch()
@@ -24,7 +10,7 @@ const FishLanding = () => {
       <FishContextProvider>
         <Switch>
           <Route exact path={path} component={FishList} />
-          <Route path={`${path}/:fishName`} component={FishTest} />
+          <Route path={`${path}/:fishName`} component={Fish} />
         </Switch>
       </FishContextProvider>
     </>
