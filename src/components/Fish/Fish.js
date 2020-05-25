@@ -14,7 +14,7 @@ const getFromFish = xLens => view(compose(lensFish, xLens))
 // const fishImgUrl = 
 
 // Name
-const lensName = lensPath(['name', 'name-en'])
+const lensName = lensPath(['name', 'name-USen'])
 const Name = name => <h3 key={name}>{name}</h3>
 const makeName = compose(Name, formatTitle, getFromFish(lensName))
 
@@ -80,8 +80,12 @@ const FishWrapper = children =>
 
 // makeList is a list of functions that convert data -> Components in order
 const makeList = [
-  makeName, makeCatchPhrase, makeBlathersPhrase, 
-  makeRarity, makeSize, makeLocation, 
+  makeName, 
+  makeCatchPhrase, 
+  makeBlathersPhrase, 
+  makeRarity, 
+  makeSize, 
+  makeLocation, 
   makePrice,
 ]
 

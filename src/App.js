@@ -6,7 +6,7 @@ import FishLanding from './pages/Fish/FishLanding'
 import BugsLanding from './pages/Bugs/BugsLanding'
 import VillagersLanding from './pages/Villagers/VillagersLanding'
 
-function App() {
+const App = () => {
   return (
     <>
       <BrowserRouter>
@@ -21,7 +21,7 @@ function App() {
         </main>
       </BrowserRouter>
     </>
-  );
+  )
 }
 
 export default App;

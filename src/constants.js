@@ -1,1 +1,1 @@
-export const baseURL = 'https://acnhapi.com'
+export const baseURL = 'https://acnhapi.com/v1'
